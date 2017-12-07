@@ -1,8 +1,10 @@
 #!/bin/bash
 echo "Exporting package list..."
-sudo dpkg --get-selections > /media/storage/SystemBackup/Package.list
-echo "Backing up /etc/ directory..."
-#sudo cp -R /etc/ /media/storage/SystemBackup/
-sudo rsync -a /etc/* /media/storage/SystemBackup/etc
+sudo dpkg --get-selections > /home/will/SystemBackup/Package.list
+echo "Backing up relevant /etc/ files..."
+sudo cp -r /etc/apt/* /home/will/SystemBackup/etc/apt
+sudo cp /etc/fstab /home/will/SystemBackup/etc
 echo "Backing up GPG keys..."
-sudo apt-key exportall > /media/storage/SystemBackup/Repo.keys &> /dev/null
+sudo apt-key exportall > /home/will/SystemBackup/Repo.keys &> /dev/null
+echo "Backing up dotfiles..."
+sudo cp -r /home/will/.??* /home/will/SystemBackup/Dotfiles
