@@ -9,9 +9,11 @@ sudo rsync -av /etc/fstab /home/will/SystemBackup/etc/ >> /var/log/backups/backu
 echo "Backing up GPG keys..."
 sudo apt-key exportall > /home/will/SystemBackup/Repo.keys &>/dev/null 
 echo "Backing up dotfiles..."
-sudo rsync -rav --ignore-existing /home/will/.??* /home/will/SystemBackup/Dotfiles >> /var/log/backups/backup.log 2>&1
+sudo rsync -rav --exclude "*.cache/" --ignore-existing /home/will/.??* /home/will/SystemBackup/Dotfiles >> /var/log/backups/backup.log 2>&1
 
 echo "Syncing backups to remote Raspberry Pi..."
 sudo rsync -avzP --ignore-existing -e 'ssh -p 9000 -o StrictHostKeyChecking=no' /home/will/SystemBackup/ pi@h0merouter.ddns.net:/media/USBHD/Backups/SystemBackup/ >> /var/log/backups/backup.log 2>&1
 
 printf "Backup finished.\n\n\n" >> /var/log/backups/backup.log
+date=`date +"%D %T"`
+echo "TESTING BACKUP COMPLETED AT $date" >> /var/log/backups/backup.log
